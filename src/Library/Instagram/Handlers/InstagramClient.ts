@@ -89,15 +89,25 @@ export class InstagramClient extends InstagramAccount {
     }
 
     /** INTERACTION HANDLERS **/
-    public async commentMedia(mediaId: string, text: string, _url?: string): Promise<boolean> {
+    public async commentMedia(mediaId: string, text: string, repliedToCommentId?: string): Promise<boolean> {
         try {
             const params = new URLSearchParams();
             params.append('comment_text', text);
+            if (repliedToCommentId) {
+                params.append('replied_to_comment_id', repliedToCommentId);
+            }
             const res = await this.client.post(`/api/v1/web/comments/${mediaId}/add/`, params.toString(), {
                 headers: { 'x-csrftoken': this.csrfToken }
             });
             return res.data.status === 'ok';
         } catch { return false; }
+    }
+
+    public async getMediaComments(mediaId: string): Promise<any[]> {
+        try {
+            const res = await this.client.get(`/api/v1/web/comments/${mediaId}/all/`);
+            return res.data?.comments || [];
+        } catch { return []; }
     }
 
     /** SEARCH & INFO HANDLERS **/
