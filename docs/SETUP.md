@@ -17,7 +17,7 @@ Before you begin, ensure you have the following installed:
 Clone the repository to your local machine and install the dependencies:
 
 ```bash
-git clone https://github.com/Airoza-meta/airoza.git
+git clone https://github.com/Airoza-meta/airoza-sdk.git
 cd airoza
 npm install
 ```
