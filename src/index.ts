@@ -846,7 +846,7 @@ app.post('/api/like', requireAuth, requireAccountOwnership, deductCredit(0.1), a
 });
 
 app.post('/api/comment', requireAuth, requireAccountOwnership, deductCredit(0.2), async (req, res) => {
-    const { botUsername, targetUsername, mediaId, text } = req.body;
+    const { botUsername, targetUsername, mediaId, text, replyToId } = req.body;
     const bot = getBotOrError(res, botUsername);
     if (!bot) return;
     try {
@@ -860,8 +860,8 @@ app.post('/api/comment', requireAuth, requireAccountOwnership, deductCredit(0.2)
 
         if (!tid) return res.status(400).json({ error: 'Could not resolve Media ID' });
 
-        const success = await bot.commentMedia(tid, text);
-        if (success) await logAction(botUsername, 'COMMENT', { mediaId: tid, text }, 'SUCCESS');
+        const success = await bot.commentMedia(tid, text, replyToId);
+        if (success) await logAction(botUsername, 'COMMENT', { mediaId: tid, text, replyToId }, 'SUCCESS');
         res.json({ status: success ? 'success' : 'error', mediaId: tid });
     } catch (e: any) {
         await handleBotActionError(botUsername, e, res);
@@ -998,6 +998,21 @@ app.post('/auth/forge-account', requireAuth, async (req, res) => {
         if (!res.headersSent) {
             res.status(500).json({ status: 'error', error: e.message });
         }
+    }
+});
+
+app.get('/api/comments/:mediaId', requireAuth, async (req, res) => {
+    const { botUsername } = req.query;
+    const { mediaId } = req.params;
+    const bot = getBotOrError(res, botUsername as string);
+    if (!bot) return;
+    try {
+        let tid = mediaId;
+        if (tid && tid.includes('http')) tid = await bot.getMediaIdFromUrl(tid);
+        const comments = await bot.getMediaComments(tid);
+        res.json({ status: 'success', comments });
+    } catch (e: any) {
+        await handleBotActionError(botUsername as string, e, res);
     }
 });
 
