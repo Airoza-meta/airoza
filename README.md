@@ -2,7 +2,7 @@
   <img src="assets/logo.svg" width="160" alt="Airoza Logo">
 </p>
 
-# 🤖 Airoza API
+# 🤖 Airoza SDK
 
 A robust, premium Instagram automation engine built with **Node.js**, **TypeScript**, and **Express**. Managed by **Airoza**, designed for scale, stealth, and stability.
 
