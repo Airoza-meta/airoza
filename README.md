@@ -50,7 +50,7 @@ For detailed guides, please refer to the specific documentation files:
 ---
 
 ## 🤖 Next Steps: AI Integration
-Once the server is running, explore our [AI Integration Examples](../examples/) to see how you can use ChatGPT, Gemini, or Claude to drive your Instagram nodes.
+Once the server is running, explore our [AI Integration Examples](https://github.com/Airoza-meta/airoza-sdk/tree/main/examples) to see how you can use ChatGPT, Gemini, or Claude to drive your Instagram nodes.
 
 ---
 
